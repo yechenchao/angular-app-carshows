@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { HomeComponent } from './home/home.component';
 
-const flightsRoutes = [
+const staticRoutes = [
   {
     path: '',
     component: HomeComponent,
@@ -11,7 +11,7 @@ const flightsRoutes = [
 
 @NgModule({
   imports: [
-    RouterModule.forRoot(flightsRoutes),
+    RouterModule.forRoot(staticRoutes),
   ],
   exports: [
     RouterModule,
