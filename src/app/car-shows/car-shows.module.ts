@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CarShowsLoookupComponent } from "./car-shows-loookup/car-shows-loookup.component";
+import { CarShowsLoookupComponent } from './car-shows-loookup/car-shows-loookup.component';
 import { CarShowsRoutingModule } from './car-shows.routing.module';
 import { SharedModule } from '../shared/shared.module';
 

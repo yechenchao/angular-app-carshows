@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { CarShowsService } from "../../shared/services/car-shows.service";
+import { CarShowsService } from '../../shared/services/car-shows.service';
 
 @Component({
   selector: 'app-car-shows-loookup',
