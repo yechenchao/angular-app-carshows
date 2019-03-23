@@ -28,7 +28,9 @@ export class CarShowsService {
               }
             });
 
+            this.removeDuplicatedData();
             this.sortByMake();
+            this.groupByMake();
             console.log(this.rawCarShows);
           }
 
@@ -47,6 +49,14 @@ export class CarShowsService {
 
   sortByMake() {
     this.rawCarShows = _.sortBy(this.rawCarShows, 'make');
+  }
+
+  groupByMake() {
+    this.rawCarShows = _.groupBy(this.rawCarShows, 'make');
+  }
+
+  removeDuplicatedData() {
+    this.rawCarShows = _.uniq(this.rawCarShows);
   }
 
   isValidArray(value): boolean {
