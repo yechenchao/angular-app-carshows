@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { CarShowsService } from "../../shared/services/car-shows.service";
 
 @Component({
   selector: 'app-car-shows-loookup',
@@ -7,9 +8,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CarShowsLoookupComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    private carShowsService: CarShowsService,
+  ) { }
 
-  ngOnInit() {
+  async ngOnInit() {
+    const carShows = await this.carShowsService.getCarShowsData();
+
+    console.log(carShows);
   }
 
 }
