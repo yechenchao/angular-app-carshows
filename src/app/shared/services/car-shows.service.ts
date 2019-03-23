@@ -6,12 +6,12 @@ import { environment } from '../../../environments/environment';
 
 @Injectable()
 export class CarShowsService {
-  carShowList: any[];
+  rawCarShows: any[];
 
   constructor(
     private http: HttpClient,
   ) {
-    this.carShowList = [];
+    this.rawCarShows = [];
   }
 
   getCarShowsData() {
@@ -28,7 +28,7 @@ export class CarShowsService {
               }
             });
 
-            console.log(this.carShowList);
+            console.log(this.rawCarShows);
           }
 
           return;
@@ -38,9 +38,9 @@ export class CarShowsService {
 
   addToCarShowList(name: string, cars: any) {
     _.each(cars, car => {
-      const carShow = Object.assign({ name: name }, car);
+      const rawCarShow = Object.assign({ name: name }, car);
 
-      this.carShowList.push(carShow);
+      this.rawCarShows.push(rawCarShow);
     })
   }
 
