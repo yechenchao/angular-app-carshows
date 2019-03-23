@@ -14,8 +14,6 @@ export class CarShowsLoookupComponent implements OnInit {
 
   async ngOnInit() {
     const carShows = await this.carShowsService.getCarShowsData();
-
-    console.log(carShows);
   }
 
 }
