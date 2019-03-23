@@ -28,6 +28,7 @@ export class CarShowsService {
               }
             });
 
+            this.sortByMake();
             console.log(this.rawCarShows);
           }
 
@@ -42,6 +43,10 @@ export class CarShowsService {
 
       this.rawCarShows.push(rawCarShow);
     })
+  }
+
+  sortByMake() {
+    this.rawCarShows = _.sortBy(this.rawCarShows, 'make');
   }
 
   isValidArray(value): boolean {
