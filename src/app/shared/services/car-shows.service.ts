@@ -6,23 +6,29 @@ import { environment } from '../../../environments/environment';
 
 @Injectable()
 export class CarShowsService {
+  carShowList: any[];
+
   constructor(
     private http: HttpClient,
-  ) {}
+  ) {
+    this.carShowList = [];
+  }
 
   getCarShowsData() {
-    const carShowList = [];
-
     return this.http.get(environment.api.carShows)
       .pipe(
         first(),
         map((shows: any[]) => {
-          if (_.isArray(shows) && !_.isEmpty(shows)) {
+          if (this.isValidArray(shows)) {
             _.each(shows, show => {
-              if (_.has(show, 'name') && _.isString(show.name) && _.has(show, 'cars') && _.isArray(show.cars) && !_.isEmpty(show.cars)) {
-                console.log(show);
+              if (show['name'] && show['cars'] && this.isValidArray(show.cars)) {
+                this.addToCarShowList(show.name, show.cars);
+              } else {
+                // fire error
               }
             });
+
+            console.log(this.carShowList);
           }
 
           return;
@@ -30,7 +36,15 @@ export class CarShowsService {
       .toPromise();
   }
 
-  validateData() {
+  addToCarShowList(name: string, cars: any) {
+    _.each(cars, car => {
+      const carShow = Object.assign({ name: name }, car);
 
+      this.carShowList.push(carShow);
+    })
+  }
+
+  isValidArray(value): boolean {
+    return _.isArray(value) && !_.isEmpty(value);
   }
 }
