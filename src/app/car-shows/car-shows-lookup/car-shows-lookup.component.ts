@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { CarShows } from '../../shared/interfaces/carShows.interface';
 import { CarShowsService } from '../../shared/services/car-shows.service';
 
 @Component({
@@ -7,20 +8,21 @@ import { CarShowsService } from '../../shared/services/car-shows.service';
   styleUrls: ['./car-shows-lookup.component.scss']
 })
 export class CarShowsLookupComponent implements OnInit {
+  carShows: CarShows[];
 
   constructor(
     private carShowsService: CarShowsService,
   ) { }
 
-  ngOnInit() {
-    this.getCarShows();
+  ngOnInit(): Promise<void> {
+    return this.getCarShows();
   }
 
-  async getCarShows() {
+  async getCarShows(): Promise<void> {
     try {
-      const carShows = await this.carShowsService.getCarShowsData();
+      this.carShows = await this.carShowsService.getCarShowsData();
 
-      console.log(carShows);
+      console.log(this.carShows);
     } catch (error) {
       console.log(error);
     }
