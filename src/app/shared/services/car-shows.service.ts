@@ -19,6 +19,8 @@ export class CarShowsService {
       .pipe(
         first(),
         map((shows: any[]) => {
+          console.log(shows);
+
           if (this.isValidArray(shows)) {
             _.each(shows, show => {
               if (show['name'] && show['cars'] && this.isValidArray(show.cars)) {
@@ -28,9 +30,7 @@ export class CarShowsService {
               }
             });
 
-            this.removeDuplicatedData();
-            this.sortByMake();
-            this.groupByMake();
+            this.processCarShowsData();
             console.log(this.rawCarShows);
           }
 
@@ -47,16 +47,23 @@ export class CarShowsService {
     })
   }
 
-  sortByMake() {
-    this.rawCarShows = _.sortBy(this.rawCarShows, 'make');
-  }
-
-  groupByMake() {
-    this.rawCarShows = _.groupBy(this.rawCarShows, 'make');
-  }
-
-  removeDuplicatedData() {
-    this.rawCarShows = _.uniq(this.rawCarShows);
+  processCarShowsData() {
+    this.rawCarShows = _.chain(this.rawCarShows)
+      .uniq(rawCarShow => {
+        return JSON.stringify(rawCarShow);
+      })
+      .filter(rawCarShow => {
+        return rawCarShow['make'] && rawCarShow['name'] && rawCarShow['model'];
+      })
+      .sortBy('make')
+      .groupBy('make')
+      .map((value, key) => {
+        return {
+          make: key,
+          cars: value,
+        }
+      })
+      .value();
   }
 
   isValidArray(value): boolean {
