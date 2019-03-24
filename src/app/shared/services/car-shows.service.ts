@@ -69,11 +69,13 @@ export class CarShowsService {
   getFormattedCars(rawCars): ModelShows[] {
     return _.chain(rawCars)
       .map(rawCar => _.omit(rawCar, 'make'))
+      .sortBy('model')
       .groupBy('model')
       .map((modelShows, model) => {
         const shows = _.chain(modelShows)
           .map(v => _.omit(v, 'model'))
           .pluck('name')
+          .sortBy()
           .value();
 
         return {
