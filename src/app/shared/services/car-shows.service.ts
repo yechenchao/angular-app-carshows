@@ -58,9 +58,13 @@ export class CarShowsService {
       .sortBy('make')
       .groupBy('make')
       .map((value, key) => {
+        let cars = _.map(value, car => {
+          return _.omit(car, 'make')
+        });
+
         return {
           make: key,
-          cars: value,
+          cars: cars,
         }
       })
       .value();
