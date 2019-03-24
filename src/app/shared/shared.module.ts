@@ -1,6 +1,6 @@
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
-import { MatButtonModule, MatExpansionModule, MatTreeModule } from '@angular/material';
+import { MatButtonModule, MatCardModule, MatExpansionModule, MatListModule, MatTreeModule } from '@angular/material';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CarShowsService } from './services/car-shows.service';
@@ -11,7 +11,9 @@ import { CarShowsService } from './services/car-shows.service';
     BrowserAnimationsModule,
     HttpClientModule,
     MatButtonModule,
+    MatCardModule,
     MatExpansionModule,
+    MatListModule,
     MatTreeModule,
   ],
   providers: [

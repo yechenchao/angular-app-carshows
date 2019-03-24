@@ -36,7 +36,7 @@ export class CarShowsService {
             return this.getFormattedCarShows();
           }
 
-          return;
+          return [];
         }))
       .toPromise();
   }

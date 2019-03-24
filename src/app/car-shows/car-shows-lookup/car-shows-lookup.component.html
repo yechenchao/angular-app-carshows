@@ -1,26 +1,33 @@
-<div>
-  <h3>
+<div class="wrapper">
+  <h2>
     Car Shows Lookup
-  </h3>
-  <mat-accordion *ngIf="carShows">
-    <mat-expansion-panel *ngFor="let carShow of carShows">
-      <mat-expansion-panel-header>
-        <mat-panel-title>
-          {{ carShow.make }}
-        </mat-panel-title>
-      </mat-expansion-panel-header>
-      <mat-expansion-panel *ngFor="let car of carShow.cars">
+  </h2>
+  <div class="content">
+    <mat-accordion *ngIf="carShows?.length > 0; else noData">
+      <mat-expansion-panel *ngFor="let carShow of carShows">
         <mat-expansion-panel-header>
           <mat-panel-title>
-            {{ car.model }}
+            {{ carShow.make }}
           </mat-panel-title>
         </mat-expansion-panel-header>
-        <ul>
-          <li *ngFor="let show of car.shows">
-            {{ show }}
-          </li>
-        </ul>
+        <mat-expansion-panel *ngFor="let car of carShow.cars">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              {{ car.model }}
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <mat-list>
+            <mat-list-item *ngFor="let show of car.shows">
+              {{ show }}
+            </mat-list-item>
+          </mat-list>
+        </mat-expansion-panel>
       </mat-expansion-panel>
-    </mat-expansion-panel>
-  </mat-accordion>
+    </mat-accordion>
+    <ng-template #noData>
+      <mat-card>
+        No car shows were found, please try again.
+      </mat-card>
+    </ng-template>
+  </div>
 </div>

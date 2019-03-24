@@ -9,6 +9,7 @@ import { CarShowsService } from '../../shared/services/car-shows.service';
 })
 export class CarShowsLookupComponent implements OnInit {
   carShows: CarShows[];
+  error: string;
 
   constructor(
     private carShowsService: CarShowsService,
@@ -24,7 +25,8 @@ export class CarShowsLookupComponent implements OnInit {
 
       console.log(this.carShows);
     } catch (error) {
-      console.log(error);
+      this.error = error;
+      console.error(error);
     }
   }
 }
