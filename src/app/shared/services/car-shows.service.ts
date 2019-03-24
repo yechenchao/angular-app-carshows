@@ -8,7 +8,6 @@ import { CarShows, RawCarShows } from '../interfaces/carShows.interface';
 @Injectable()
 export class CarShowsService {
   private rawCarShows: RawCarShows[];
-  public carShows: CarShows[];
 
   constructor(
     private http: HttpClient,
@@ -16,7 +15,7 @@ export class CarShowsService {
     this.rawCarShows = [];
   }
 
-  getCarShowsData() {
+  getCarShowsData(): Promise<CarShows[]> {
     return this.http.get(environment.api.carShows)
       .pipe(
         first(),
@@ -26,13 +25,13 @@ export class CarShowsService {
               if (show['name'] && show['cars'] && this.isValidArray(show.cars)) {
                 this.addToCarShowList(show.name, show.cars);
               } else {
-                // fire error
+                console.error('Data corrupted');
               }
             });
 
-            this.processCarShows();
             console.log(this.rawCarShows);
-            console.log(this.carShows);
+
+            return this.getFormattedCarShows();
           }
 
           return;
@@ -40,7 +39,7 @@ export class CarShowsService {
       .toPromise();
   }
 
-  addToCarShowList(name: string, cars: any) {
+  addToCarShowList(name: string, cars: any): void {
     _.each(cars, car => {
       const rawCarShow = Object.assign({ name: name }, car);
 
@@ -48,8 +47,8 @@ export class CarShowsService {
     })
   }
 
-  processCarShows(): void {
-    this.carShows = _.chain(this.rawCarShows)
+  getFormattedCarShows(): CarShows[] {
+    return _.chain(this.rawCarShows)
       .uniq(rawCarShow => JSON.stringify(rawCarShow))
       .filter(rawCarShow => _.keys(rawCarShow).length === 3 && rawCarShow['make'] && rawCarShow['name'] && rawCarShow['model'])
       .sortBy('make')
