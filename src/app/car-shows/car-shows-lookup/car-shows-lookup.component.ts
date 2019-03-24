@@ -10,6 +10,7 @@ import { CarShowsService } from '../../shared/services/car-shows.service';
 export class CarShowsLookupComponent implements OnInit {
   carShows: CarShows[];
   error: string;
+  loaded: boolean;
 
   constructor(
     private carShowsService: CarShowsService,
@@ -28,5 +29,7 @@ export class CarShowsLookupComponent implements OnInit {
       this.error = error;
       console.error(error);
     }
+
+    this.loaded = true;
   }
 }
