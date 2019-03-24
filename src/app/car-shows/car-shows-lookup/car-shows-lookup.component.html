@@ -4,7 +4,7 @@
   </h2>
   <div *ngIf="loaded" class="content">
     <mat-card *ngIf="error; else showData" class="error-card">
-      {{ error }}
+      {{ error }}. Please try again.
     </mat-card>
     <ng-template #showData>
       <mat-accordion *ngIf="carShows?.length > 0; else noData">
@@ -34,5 +34,6 @@
         </mat-card>
       </ng-template>
     </ng-template>
+    <!-- todo reload button -->
   </div>
 </div>
