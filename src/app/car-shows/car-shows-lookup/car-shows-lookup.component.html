@@ -1,3 +1,26 @@
-<h3>
-  Car Shows Lookup
-</h3>
+<div>
+  <h3>
+    Car Shows Lookup
+  </h3>
+  <mat-accordion *ngIf="carShows">
+    <mat-expansion-panel *ngFor="let carShow of carShows">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          {{ carShow.make }}
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <mat-expansion-panel *ngFor="let car of carShow.cars">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            {{ car.model }}
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <ul>
+          <li *ngFor="let show of car.shows">
+            {{ show }}
+          </li>
+        </ul>
+      </mat-expansion-panel>
+    </mat-expansion-panel>
+  </mat-accordion>
+</div>
