@@ -3,10 +3,12 @@ import { Injectable } from '@angular/core';
 import { first, map } from 'rxjs/operators';
 import { _ } from 'underscore';
 import { environment } from '../../../environments/environment';
+import { CarShows, RawCarShows } from '../interfaces/carShows.interface';
 
 @Injectable()
 export class CarShowsService {
-  rawCarShows: any[];
+  private rawCarShows: RawCarShows[];
+  public carShows: CarShows[];
 
   constructor(
     private http: HttpClient,
@@ -19,8 +21,6 @@ export class CarShowsService {
       .pipe(
         first(),
         map((shows: any[]) => {
-          console.log(shows);
-
           if (this.isValidArray(shows)) {
             _.each(shows, show => {
               if (show['name'] && show['cars'] && this.isValidArray(show.cars)) {
@@ -30,8 +30,9 @@ export class CarShowsService {
               }
             });
 
-            this.processCarShowsData();
+            this.processCarShows();
             console.log(this.rawCarShows);
+            console.log(this.carShows);
           }
 
           return;
@@ -47,35 +48,37 @@ export class CarShowsService {
     })
   }
 
-  processCarShowsData() {
-    this.rawCarShows = _.chain(this.rawCarShows)
+  processCarShows(): void {
+    this.carShows = _.chain(this.rawCarShows)
       .uniq(rawCarShow => JSON.stringify(rawCarShow))
       .filter(rawCarShow => _.keys(rawCarShow).length === 3 && rawCarShow['make'] && rawCarShow['name'] && rawCarShow['model'])
       .sortBy('make')
       .groupBy('make')
-      .map((value, key) => {
-        const cars = _.chain(value)
-          .map(car => _.omit(car, 'make'))
-          .groupBy('model')
-          .map((val, ke) => {
-            console.log(val);
-
-            const ca = _.chain(val)
-              .map(v => _.omit(v, 'model'))
-              .pluck('name')
-              .value();
-
-            return {
-              model: ke,
-              shows: ca,
-            };
-          })
-          .value();
+      .map((rawCars, key) => {
+        const formattedCars = this.getFormattedCars(rawCars);
 
         return {
           make: key,
-          cars: cars,
+          cars: formattedCars,
         }
+      })
+      .value();
+  }
+
+  getFormattedCars(rawCars) {
+    return _.chain(rawCars)
+      .map(rawCar => _.omit(rawCar, 'make'))
+      .groupBy('model')
+      .map((modelShows, model) => {
+        const shows = _.chain(modelShows)
+          .map(v => _.omit(v, 'model'))
+          .pluck('name')
+          .value();
+
+        return {
+          model: model,
+          shows: shows,
+        };
       })
       .value();
   }
