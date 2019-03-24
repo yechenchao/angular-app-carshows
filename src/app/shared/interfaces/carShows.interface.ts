@@ -10,7 +10,7 @@ export interface CarShows {
   cars: ModelShows[];
 }
 
-interface ModelShows {
+export interface ModelShows {
   model: string;
   shows: string[];
 }

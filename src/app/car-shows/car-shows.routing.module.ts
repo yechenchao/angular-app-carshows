@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { CarShowsLoookupComponent } from './car-shows-loookup/car-shows-loookup.component';
+import { CarShowsLookupComponent } from './car-shows-lookup/car-shows-lookup.component';
 
 const carShowsRoutes = [
   {
     path: 'showsLookup',
-    component: CarShowsLoookupComponent,
+    component: CarShowsLookupComponent,
   },
 ];
 

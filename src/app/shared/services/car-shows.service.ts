@@ -1,9 +1,10 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { first, map } from 'rxjs/operators';
+import { Observable, throwError } from 'rxjs';
+import { catchError, first, map } from 'rxjs/operators';
 import { _ } from 'underscore';
 import { environment } from '../../../environments/environment';
-import { CarShows, RawCarShows } from '../interfaces/carShows.interface';
+import { CarShows, ModelShows, RawCarShows } from '../interfaces/carShows.interface';
 
 @Injectable()
 export class CarShowsService {
@@ -19,6 +20,7 @@ export class CarShowsService {
     return this.http.get(environment.api.carShows)
       .pipe(
         first(),
+        catchError(this.handleError),
         map((shows: any[]) => {
           if (this.isValidArray(shows)) {
             _.each(shows, show => {
@@ -53,18 +55,18 @@ export class CarShowsService {
       .filter(rawCarShow => _.keys(rawCarShow).length === 3 && rawCarShow['make'] && rawCarShow['name'] && rawCarShow['model'])
       .sortBy('make')
       .groupBy('make')
-      .map((rawCars, key) => {
+      .map((rawCars, make) => {
         const formattedCars = this.getFormattedCars(rawCars);
 
         return {
-          make: key,
+          make: make,
           cars: formattedCars,
         }
       })
       .value();
   }
 
-  getFormattedCars(rawCars) {
+  getFormattedCars(rawCars): ModelShows[] {
     return _.chain(rawCars)
       .map(rawCar => _.omit(rawCar, 'make'))
       .groupBy('model')
@@ -84,5 +86,9 @@ export class CarShowsService {
 
   isValidArray(value): boolean {
     return _.isArray(value) && !_.isEmpty(value);
+  }
+
+  private handleError(error: HttpErrorResponse): Observable<never> {
+    return throwError(error.error)
   }
 }
