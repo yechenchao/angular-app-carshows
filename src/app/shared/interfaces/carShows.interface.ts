@@ -4,6 +4,11 @@ export interface RawCarShows {
   name: string;
 }
 
+export interface RawModelShows {
+  model: string;
+  name: string;
+}
+
 export interface CarShows {
   make: string;
   cars: ModelShows[];

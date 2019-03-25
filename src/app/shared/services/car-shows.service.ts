@@ -4,7 +4,7 @@ import { Observable, throwError } from 'rxjs';
 import { catchError, first, map } from 'rxjs/operators';
 import { _ } from 'underscore';
 import { environment } from '../../../environments/environment';
-import { CarShows, ModelShows, RawCarShows } from '../interfaces/carShows.interface';
+import { CarShows, ModelShows, RawCarShows, RawModelShows } from '../interfaces/carShows.interface';
 
 @Injectable()
 export class CarShowsService {
@@ -56,28 +56,23 @@ export class CarShowsService {
       .sortBy('make')
       .groupBy('make')
       .map((rawCars, make) => {
-        const formattedCars = this.getFormattedCars(rawCars);
+        const modelShows = this.getModelShows(rawCars);
 
         return {
           make: make,
-          cars: formattedCars,
+          cars: modelShows,
         }
       })
       .value();
   }
 
-  getFormattedCars(rawCars): ModelShows[] {
+  getModelShows(rawCars: RawCarShows[]): ModelShows[] {
     return _.chain(rawCars)
       .map(rawCar => _.omit(rawCar, 'make'))
       .sortBy('model')
       .groupBy('model')
       .map((modelShows, model) => {
-        //Todo optimise
-        const shows = _.chain(modelShows)
-          .map(modelShow => _.omit(modelShow, 'model'))
-          .pluck('name')
-          .sortBy()
-          .value();
+        const shows = this.getShows(modelShows);
 
         return {
           model: model,
@@ -87,7 +82,15 @@ export class CarShowsService {
       .value();
   }
 
-  isValidArray(value): boolean {
+  getShows(modelShows: RawModelShows[]): string[] {
+    return _.chain(modelShows)
+      .map(modelShow => _.omit(modelShow, 'model'))
+      .pluck('name')
+      .sortBy()
+      .value();
+  }
+
+  isValidArray(value: any): boolean {
     return _.isArray(value) && !_.isEmpty(value);
   }
 
