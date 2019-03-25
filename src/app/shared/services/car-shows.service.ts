@@ -31,8 +31,6 @@ export class CarShowsService {
               }
             });
 
-            console.log(this.rawCarShows);
-
             return this.getFormattedCarShows();
           }
 
@@ -90,7 +88,7 @@ export class CarShowsService {
       .value();
   }
 
-  isValidArray(value: any): boolean {
+  private isValidArray(value: any): boolean {
     return _.isArray(value) && !_.isEmpty(value);
   }
 
