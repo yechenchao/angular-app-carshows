@@ -1,4 +1,4 @@
-export interface RawCarShows {
+export interface RawCarShow {
   make: string;
   model: string;
   name: string;

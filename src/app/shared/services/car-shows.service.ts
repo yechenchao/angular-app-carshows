@@ -4,11 +4,11 @@ import { Observable, throwError } from 'rxjs';
 import { catchError, first, map } from 'rxjs/operators';
 import { _ } from 'underscore';
 import { environment } from '../../../environments/environment';
-import { CarShows, ModelShows, RawCarShows, RawModelShows } from '../interfaces/carShows.interface';
+import { CarShows, ModelShows, RawCarShow, RawModelShows } from '../interfaces/carShows.interface';
 
 @Injectable()
 export class CarShowsService {
-  private rawCarShows: RawCarShows[];
+  private rawCarShows: RawCarShow[];
 
   constructor(
     private http: HttpClient,
@@ -66,7 +66,7 @@ export class CarShowsService {
       .value();
   }
 
-  getModelShows(rawCars: RawCarShows[]): ModelShows[] {
+  getModelShows(rawCars: RawCarShow[]): ModelShows[] {
     return _.chain(rawCars)
       .map(rawCar => _.omit(rawCar, 'make'))
       .sortBy('model')
