@@ -5,7 +5,7 @@ import { of, throwError } from 'rxjs';
 import { CarShowsService } from './car-shows.service';
 import { CommonService } from './common.service';
 
-fdescribe('AccountService', () => {
+describe('AccountService', () => {
   const httpClientMock = {
     get: jasmine.createSpy('get'),
   };
