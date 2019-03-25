@@ -66,7 +66,7 @@ fdescribe('AccountService', () => {
                 model: 'Elisa',
               },
             ]
-          }
+          },
         ])
       });
 
@@ -105,6 +105,102 @@ fdescribe('AccountService', () => {
         },
       ])
   }));
+
+  it('should remove corrupted data and output re-formatted data grouped by make alphabetically',
+    inject([CarShowsService], async (service: CarShowsService) => {
+      httpClientMock.get.and.callFake(() => {
+        return of([
+          {
+            name: 'Melbourne Motor Show',
+            cars: [
+              {
+                make: 'Julio Mechannica',
+                model: 'Mark 4S',
+              },
+              {
+                make: 'Hondaka',
+                model: 'Elisa',
+              },
+              {
+                make: 'Hondaka',
+                model: 'Elisa',
+              },
+              {
+                make: 'Hondaka',
+                model: '',
+              },
+            ]
+          },
+          {
+            name: 'Cartopia',
+            cars: [
+              {
+                make: 'Moto Tourismo',
+                model: 'Cyclissimo',
+              },
+              {
+                make: 'Julio Mechannica',
+                model: 'Mark 1',
+              },
+              {
+                make: 'Hondaka',
+                model: 'Elisa',
+              },
+              {
+                make: '',
+                model: 'Elisa',
+              },
+            ]
+          },
+          {
+            name: 'Cartopia',
+          },
+          {
+            cars: [
+              {
+                make: 'Moto Tourismo',
+                model: 'Cyclissimo',
+              },
+            ]
+          },
+        ])
+      });
+
+      const carShows = await service.getCarShowsData();
+      expect(carShows).toEqual([
+        {
+          make: 'Hondaka',
+          cars: [
+            {
+              model: 'Elisa',
+              shows: [ 'Cartopia', 'Melbourne Motor Show' ],
+            }
+          ],
+        },
+        {
+          make: 'Julio Mechannica',
+          cars: [
+            {
+              model: 'Mark 1',
+              shows: [ 'Cartopia' ]
+            },
+            {
+              model: 'Mark 4S',
+              shows: [ 'Melbourne Motor Show' ]
+            },
+          ],
+        },
+        {
+          make: 'Moto Tourismo',
+          cars: [
+            {
+              model: 'Cyclissimo',
+              shows: [ 'Cartopia' ]
+            },
+          ],
+        },
+      ])
+    }));
 
   it('should output empty data when get empty object from api', inject([CarShowsService], async (service: CarShowsService) => {
     httpClientMock.get.and.callFake(() => {
