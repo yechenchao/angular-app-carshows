@@ -4,6 +4,7 @@ import { MatButtonModule, MatCardModule, MatExpansionModule, MatListModule, MatT
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CarShowsService } from './services/car-shows.service';
+import { CommonService } from './services/common.service';
 
 @NgModule({
   exports: [
@@ -18,6 +19,7 @@ import { CarShowsService } from './services/car-shows.service';
   ],
   providers: [
     CarShowsService,
+    CommonService,
   ]
 })
 

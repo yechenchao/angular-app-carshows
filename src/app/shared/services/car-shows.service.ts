@@ -1,16 +1,17 @@
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, throwError } from 'rxjs';
 import { catchError, first, map } from 'rxjs/operators';
 import { _ } from 'underscore';
 import { environment } from '../../../environments/environment';
 import { CarShows, ModelShows, RawCarShow, RawModelShows } from '../interfaces/carShows.interface';
+import { CommonService } from './common.service';
 
 @Injectable()
 export class CarShowsService {
   private rawCarShows: RawCarShow[];
 
   constructor(
+    private commonService: CommonService,
     private http: HttpClient,
   ) {
     this.rawCarShows = [];
@@ -20,11 +21,11 @@ export class CarShowsService {
     return this.http.get(environment.api.carShows)
       .pipe(
         first(),
-        catchError(this.handleError),
+        catchError(this.commonService.handleError),
         map((shows: any[]) => {
-          if (this.isValidArray(shows)) {
+          if (this.commonService.isValidArray(shows)) {
             _.each(shows, show => {
-              if (show['name'] && show['cars'] && this.isValidArray(show.cars)) {
+              if (show['name'] && show['cars'] && this.commonService.isValidArray(show.cars)) {
                 this.addToCarShowList(show.name, show.cars);
               } else {
                 console.error('Data corrupted');
@@ -86,15 +87,5 @@ export class CarShowsService {
       .pluck('name')
       .sortBy()
       .value();
-  }
-
-  private isValidArray(value: any): boolean {
-    return _.isArray(value) && !_.isEmpty(value);
-  }
-
-  private handleError(error: HttpErrorResponse): Observable<never> {
-    console.error(error);
-
-    return throwError('Failed connection to the service. Please try again.')
   }
 }
