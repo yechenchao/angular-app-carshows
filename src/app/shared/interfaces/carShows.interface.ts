@@ -1,3 +1,8 @@
+export interface PristineCar {
+  make: string;
+  model: string;
+}
+
 export interface RawCarShow {
   make: string;
   model: string;

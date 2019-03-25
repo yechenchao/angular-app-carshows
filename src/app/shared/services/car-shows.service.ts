@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { catchError, first, map } from 'rxjs/operators';
 import { _ } from 'underscore';
 import { environment } from '../../../environments/environment';
-import { CarShows, ModelShows, RawCarShow, RawModelShows } from '../interfaces/carShows.interface';
+import { CarShows, ModelShows, PristineCar, RawCarShow, RawModelShows } from '../interfaces/carShows.interface';
 import { CommonService } from './common.service';
 
 @Injectable()
@@ -40,7 +40,7 @@ export class CarShowsService {
       .toPromise();
   }
 
-  addToCarShowList(name: string, cars: any): void {
+  addToCarShowList(name: string, cars: PristineCar[]): void {
     _.each(cars, car => {
       const rawCarShow = Object.assign({ name: name }, car);
 
@@ -81,9 +81,9 @@ export class CarShowsService {
       .value();
   }
 
-  getShows(modelShows: RawModelShows[]): string[] {
-    return _.chain(modelShows)
-      .map(modelShow => _.omit(modelShow, 'model'))
+  getShows(rawModelShows: RawModelShows[]): string[] {
+    return _.chain(rawModelShows)
+      .map(rawModelShow => _.omit(rawModelShow, 'model'))
       .pluck('name')
       .sortBy()
       .value();

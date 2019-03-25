@@ -202,6 +202,107 @@ fdescribe('AccountService', () => {
       ])
     }));
 
+  it('should add raw data to car show variable', inject([CarShowsService], async (service: CarShowsService) => {
+    service.addToCarShowList('Moto Tourismo', [
+      {
+        make: 'Julio Mechannica',
+        model: 'Mark 1',
+      },
+      {
+        make: 'Julio Mechannica',
+        model: 'Mark 4S',
+      },
+    ]);
+
+    expect(service['rawCarShows']).toEqual([
+      {
+        make: 'Julio Mechannica',
+        model: 'Mark 1',
+        name: 'Moto Tourismo',
+      },
+      {
+        make: 'Julio Mechannica',
+        model: 'Mark 4S',
+        name: 'Moto Tourismo',
+      },
+    ])
+  }));
+
+  it('should get formatted car shows', inject([CarShowsService], async (service: CarShowsService) => {
+    service['rawCarShows'] = [
+      {
+        make: 'Julio Mechannica',
+        model: 'Mark 4S',
+        name: 'Moto Tourismo',
+      },
+      {
+        make: 'Julio Mechannica',
+        model: 'Mark 1',
+        name: 'Melbourne Car Show',
+      },
+    ];
+
+    const formattedCarShows = service.getFormattedCarShows();
+    expect(formattedCarShows).toEqual([
+      {
+        make: 'Julio Mechannica',
+        cars: [
+          {
+            model: 'Mark 1',
+            shows: [ 'Melbourne Car Show' ],
+          },
+          {
+            model: 'Mark 4S',
+            shows: [ 'Moto Tourismo' ],
+          }
+        ]
+      }
+    ])
+  }));
+
+  it('should get formatted data of model shows ', inject([CarShowsService], async (service: CarShowsService) => {
+    const modelShows = [
+      {
+        make: 'Julio Mechannica',
+        model: 'Mark 4S',
+        name: 'Moto Tourismo',
+      },
+      {
+        make: 'Julio Mechannica',
+        model: 'Mark 1',
+        name: 'Melbourne Car Show',
+      },
+    ];
+
+    const formattedModelShows = service.getModelShows(modelShows);
+    expect(formattedModelShows).toEqual([
+      {
+        model: 'Mark 1',
+        shows: [ 'Melbourne Car Show' ],
+      },
+      {
+        model: 'Mark 4S',
+        shows: [ 'Moto Tourismo' ],
+      }
+    ])
+  }));
+
+  it('should get shows ', inject([CarShowsService], async (service: CarShowsService) => {
+    const rawModelShows = [
+      {
+        model: 'Mark 1',
+        name: 'Moto Tourismo',
+      },
+      {
+        model: 'Mark 1',
+        name: 'Melbourne Car Show',
+      },
+    ];
+
+    const formattedModelShows = service.getShows(rawModelShows);
+    expect(formattedModelShows).toEqual([ 'Melbourne Car Show',  'Moto Tourismo' ]);
+  }));
+
   it('should output empty data when get empty object from api', inject([CarShowsService], async (service: CarShowsService) => {
     httpClientMock.get.and.callFake(() => {
       return of({})
