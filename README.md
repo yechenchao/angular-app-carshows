@@ -17,3 +17,6 @@ Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.
 ## Running linting
 
 Run `ng lint` to execute linting
+
+## Enable Cross-Origin on Chrome
+Install [extension](https://chrome.google.com/webstore/detail/allow-control-allow-origi/nlfbmbojpeacfghkpbjhddihlkkiljbi)
