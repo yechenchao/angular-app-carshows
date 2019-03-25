@@ -27,9 +27,12 @@ export class CarShowsLookupComponent implements OnInit {
       console.log(this.carShows);
     } catch (error) {
       this.error = error;
-      console.error(error);
     }
 
     this.loaded = true;
+  }
+
+  reload(): void {
+    window.location.reload();
   }
 }

@@ -74,7 +74,7 @@ export class CarShowsService {
       .map((modelShows, model) => {
         //Todo optimise
         const shows = _.chain(modelShows)
-          .map(v => _.omit(v, 'model'))
+          .map(modelShow => _.omit(modelShow, 'model'))
           .pluck('name')
           .sortBy()
           .value();
@@ -92,6 +92,8 @@ export class CarShowsService {
   }
 
   private handleError(error: HttpErrorResponse): Observable<never> {
-    return throwError(error.error)
+    console.error(error);
+
+    return throwError('Failed connection to the service. Please try again.')
   }
 }
