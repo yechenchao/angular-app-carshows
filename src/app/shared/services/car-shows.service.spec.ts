@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { inject, TestBed } from '@angular/core/testing';
-import { of } from 'rxjs';
+import { of, throwError } from 'rxjs';
 import { CarShowsService } from './car-shows.service';
 import { CommonService } from './common.service';
 
@@ -103,7 +103,10 @@ fdescribe('AccountService', () => {
             },
           ],
         },
-      ])
+      ]);
+
+      expect(console.error).toHaveBeenCalledTimes(0);
+      expect(httpClientMock.get).toHaveBeenCalledTimes(1);
   }));
 
   it('should remove corrupted data and output re-formatted data grouped by make alphabetically',
@@ -199,7 +202,10 @@ fdescribe('AccountService', () => {
             },
           ],
         },
-      ])
+      ]);
+
+      expect(console.error).toHaveBeenCalledTimes(2);
+      expect(httpClientMock.get).toHaveBeenCalledTimes(1);
     }));
 
   it('should add raw data to car show variable', inject([CarShowsService], async (service: CarShowsService) => {
@@ -310,6 +316,9 @@ fdescribe('AccountService', () => {
 
     const carShows = await service.getCarShowsData();
     expect(carShows).toEqual([]);
+
+    expect(console.error).toHaveBeenCalledTimes(0);
+    expect(httpClientMock.get).toHaveBeenCalledTimes(1);
   }));
 
   it('should output empty data when get empty array from api', inject([CarShowsService], async (service: CarShowsService) => {
@@ -319,6 +328,9 @@ fdescribe('AccountService', () => {
 
     const carShows = await service.getCarShowsData();
     expect(carShows).toEqual([]);
+
+    expect(console.error).toHaveBeenCalledTimes(0);
+    expect(httpClientMock.get).toHaveBeenCalledTimes(1);
   }));
 
   it('should output empty data when get null value from api', inject([CarShowsService], async (service: CarShowsService) => {
@@ -328,6 +340,9 @@ fdescribe('AccountService', () => {
 
     const carShows = await service.getCarShowsData();
     expect(carShows).toEqual([]);
+
+    expect(console.error).toHaveBeenCalledTimes(0);
+    expect(httpClientMock.get).toHaveBeenCalledTimes(1);
   }));
 
   it('should output empty data when get undefined value from api', inject([CarShowsService], async (service: CarShowsService) => {
@@ -337,5 +352,24 @@ fdescribe('AccountService', () => {
 
     const carShows = await service.getCarShowsData();
     expect(carShows).toEqual([]);
+
+    expect(console.error).toHaveBeenCalledTimes(0);
+    expect(httpClientMock.get).toHaveBeenCalledTimes(1);
+  }));
+
+  it('should handle errors', inject([CarShowsService], async (service: CarShowsService) => {
+    httpClientMock.get.and.callFake(() => {
+      return throwError('Failed to connect to server.');
+    });
+
+    try {
+      await service.getCarShowsData();
+    } catch(err) {
+      expect(err).toEqual('Failed connection to the service. Please try again.');
+    }
+
+    expect(console.error).toHaveBeenCalledTimes(1);
+    expect(console.error).toHaveBeenCalledWith('Failed to connect to server.');
+    expect(httpClientMock.get).toHaveBeenCalledTimes(1);
   }));
 });
