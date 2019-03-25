@@ -21,18 +21,16 @@ export class CarShowsLookupComponent implements OnInit {
   }
 
   async getCarShows(): Promise<void> {
+    this.loaded = false;
+    this.error = '';
+    this.carShows = [];
+
     try {
       this.carShows = await this.carShowsService.getCarShowsData();
-
-      console.log(this.carShows);
     } catch (error) {
       this.error = error;
     }
 
     this.loaded = true;
-  }
-
-  reload(): void {
-    window.location.reload();
   }
 }

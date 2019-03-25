@@ -48,7 +48,7 @@ describe('AccountService', () => {
                 make: 'Hondaka',
                 model: 'Elisa',
               },
-            ]
+            ],
           },
           {
             name: 'Cartopia',
@@ -65,7 +65,7 @@ describe('AccountService', () => {
                 make: 'Hondaka',
                 model: 'Elisa',
               },
-            ]
+            ],
           },
         ])
       });

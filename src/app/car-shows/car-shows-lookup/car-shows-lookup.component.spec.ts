@@ -1,5 +1,4 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { of } from 'rxjs';
 import { CarShowsService } from '../../shared/services/car-shows.service';
 import { SharedModule } from '../../shared/shared.module';
 import { CarShowsLookupComponent } from './car-shows-lookup.component';
@@ -22,11 +21,9 @@ describe('CarShowsLookupComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(CarShowsLookupComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
 
     compClass = TestBed.get(CarShowsLookupComponent);
     carShowsService = TestBed.get(CarShowsService);
-
   });
 
   it('should create', () => {
@@ -34,10 +31,52 @@ describe('CarShowsLookupComponent', () => {
   });
 
   it('should fetch car shows data', async () => {
-    spyOn(carShowsService, 'getCarShowsData').and.returnValue(of([]));
+    spyOn(carShowsService, 'getCarShowsData').and.returnValue(Promise.resolve([
+      {
+        make: 'Hondaka',
+        cars: [
+          {
+            model: 'Elisa',
+            shows: [ 'Cartopia', 'Melbourne Motor Show' ],
+          }
+        ],
+      },
+    ]));
+    fixture.detectChanges();
 
     await compClass.getCarShows();
 
-    console.log(compClass.carShows)
+    expect(compClass.carShows).toEqual([
+      {
+        make: 'Hondaka',
+        cars: [
+          {
+            model: 'Elisa',
+            shows: [ 'Cartopia', 'Melbourne Motor Show' ],
+          }
+        ],
+      },
+    ]);
+    expect(compClass.error).toEqual('');
+  });
+
+  it('should fail to fetch car shows data and show errors', async () => {
+    spyOn(carShowsService, 'getCarShowsData').and.returnValue(Promise.reject('Failed to connect'));
+    fixture.detectChanges();
+
+    await compClass.getCarShows();
+
+    expect(compClass.carShows).toEqual([]);
+    expect(compClass.error).toEqual('Failed to connect')
+  });
+
+  it('should fetch empty data', async () => {
+    spyOn(carShowsService, 'getCarShowsData').and.returnValue(Promise.resolve([]));
+    fixture.detectChanges();
+
+    await compClass.getCarShows();
+
+    expect(compClass.carShows).toEqual([]);
+    expect(compClass.error).toEqual('');
   });
 });
