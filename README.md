@@ -1,4 +1,4 @@
-# Ea
+# Car Shows Lookup
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 7.1.4.
 
@@ -13,3 +13,7 @@ Run `ng build` to build the project. The build artifacts will be stored in the `
 ## Running unit tests
 
 Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+
+## Running linting
+
+Run `ng lint` to execute linting
