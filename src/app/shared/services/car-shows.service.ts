@@ -45,7 +45,7 @@ export class CarShowsService {
       const rawCarShow = Object.assign({ name: name }, car);
 
       this.rawCarShows.push(rawCarShow);
-    })
+    });
   }
 
   getFormattedCarShows(): CarShows[] {
@@ -60,7 +60,7 @@ export class CarShowsService {
         return {
           make: make,
           cars: modelShows,
-        }
+        };
       })
       .value();
   }

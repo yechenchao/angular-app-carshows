@@ -67,7 +67,7 @@ describe('AccountService', () => {
               },
             ],
           },
-        ])
+        ]);
       });
 
       const carShows = await service.getCarShowsData();
@@ -166,7 +166,7 @@ describe('AccountService', () => {
               },
             ]
           },
-        ])
+        ]);
       });
 
       const carShows = await service.getCarShowsData();
@@ -231,7 +231,7 @@ describe('AccountService', () => {
         model: 'Mark 4S',
         name: 'Moto Tourismo',
       },
-    ])
+    ]);
   }));
 
   it('should get formatted car shows', inject([CarShowsService], async (service: CarShowsService) => {
@@ -263,7 +263,7 @@ describe('AccountService', () => {
           }
         ]
       }
-    ])
+    ]);
   }));
 
   it('should get formatted data of model shows ', inject([CarShowsService], async (service: CarShowsService) => {
@@ -290,7 +290,7 @@ describe('AccountService', () => {
         model: 'Mark 4S',
         shows: [ 'Moto Tourismo' ],
       }
-    ])
+    ]);
   }));
 
   it('should get shows ', inject([CarShowsService], async (service: CarShowsService) => {
@@ -311,7 +311,7 @@ describe('AccountService', () => {
 
   it('should output empty data when get empty object from api', inject([CarShowsService], async (service: CarShowsService) => {
     httpClientMock.get.and.callFake(() => {
-      return of({})
+      return of({});
     });
 
     const carShows = await service.getCarShowsData();
@@ -323,7 +323,7 @@ describe('AccountService', () => {
 
   it('should output empty data when get empty array from api', inject([CarShowsService], async (service: CarShowsService) => {
     httpClientMock.get.and.callFake(() => {
-      return of([])
+      return of([]);
     });
 
     const carShows = await service.getCarShowsData();
@@ -335,7 +335,7 @@ describe('AccountService', () => {
 
   it('should output empty data when get null value from api', inject([CarShowsService], async (service: CarShowsService) => {
     httpClientMock.get.and.callFake(() => {
-      return of(null)
+      return of(null);
     });
 
     const carShows = await service.getCarShowsData();
@@ -347,7 +347,7 @@ describe('AccountService', () => {
 
   it('should output empty data when get undefined value from api', inject([CarShowsService], async (service: CarShowsService) => {
     httpClientMock.get.and.callFake(() => {
-      return of(undefined)
+      return of(undefined);
     });
 
     const carShows = await service.getCarShowsData();
@@ -364,7 +364,7 @@ describe('AccountService', () => {
 
     try {
       await service.getCarShowsData();
-    } catch(err) {
+    } catch (err) {
       expect(err).toEqual('Failed connection to the service. Please try again.');
     }
 

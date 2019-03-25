@@ -11,6 +11,6 @@ export class CommonService {
   handleError(error: any): Observable<never> {
     console.error(error);
 
-    return throwError('Failed connection to the service. Please try again.')
+    return throwError('Failed connection to the service. Please try again.');
   }
 }

@@ -67,7 +67,7 @@ describe('CarShowsLookupComponent', () => {
     await compClass.getCarShows();
 
     expect(compClass.carShows).toEqual([]);
-    expect(compClass.error).toEqual('Failed to connect')
+    expect(compClass.error).toEqual('Failed to connect');
   });
 
   it('should fetch empty data', async () => {
