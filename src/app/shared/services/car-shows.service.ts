@@ -51,7 +51,7 @@ export class CarShowsService {
   getFormattedCarShows(): CarShows[] {
     return _.chain(this.rawCarShows)
       .uniq(rawCarShow => JSON.stringify(rawCarShow))
-      .filter(rawCarShow => _.keys(rawCarShow).length === 3 && rawCarShow['make'] && rawCarShow['name'] && rawCarShow['model'])
+      .filter(rawCarShow => _.keys(rawCarShow).length === 3 && rawCarShow['make'] && rawCarShow['model'])
       .sortBy('make')
       .groupBy('make')
       .map((rawCars, make) => {
